@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "name": "startup-quality-orchestrator",
+  "planning_source": "openspec",
+  "task_file": "changes/<change-id>/tasks.md",
+  "artifacts": {
+    "proposal_file": "changes/<change-id>/proposal.md",
+    "design_file": "changes/<change-id>/design.md",
+    "spec_delta_dir": "changes/<change-id>/specs"
+  },
+  "max_retries_per_task": 2,
+  "timeouts": {
+    "implementer_minutes": 20,
+    "validation_minutes": 15,
+    "reviewer_minutes": 15
+  },
+  "parallelism": {
+    "enabled": false,
+    "only_for_tasks_marked_parallel_safe": true
+  },
+  "validation_commands": {
+    "lint": "npm run lint",
+    "test": "npm run test -- --runInBand"
+  },
+  "gates": {
+    "require_lint_pass": true,
+    "require_test_pass": true,
+    "require_reviewer_approval": true,
+    "reject_on_high_severity_finding": true
+  },
+  "severity_policy": {
+    "high": "must_fix_before_merge",
+    "medium": "must-fix-or-explicitly-defer",
+    "low": "optional-improvement"
+  },
+  "escalation": {
+    "on_retry_limit_reached": "human_review_required",
+    "on_repeated_flaky_tests": "stabilize_tests_before_continue",
+    "on_security_high": "block_change"
+  },
+  "roles": {
+    "orchestrator": {
+      "prompt_file": "agent-orchestration/prompts/orchestrator.md"
+    },
+    "implementer": {
+      "prompt_file": "agent-orchestration/prompts/implementer.md"
+    },
+    "reviewer": {
+      "prompt_file": "agent-orchestration/prompts/reviewer.md"
+    }
+  },
+  "traceability": {
+    "record_open_spec_task_id": true,
+    "record_commit_sha": true,
+    "record_agent_outputs": true,
+    "record_gate_results": true,
+    "record_reviewer_findings": true
+  }
+}
