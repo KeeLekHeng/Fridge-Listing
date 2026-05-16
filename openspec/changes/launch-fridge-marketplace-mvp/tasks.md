@@ -28,19 +28,19 @@ Each task below includes a **Reviewer focus** section listing what the reviewer 
 **Spec:** `specs/monorepo/spec.md`
 
 **Acceptance Criteria:**
-- [ ] `pnpm-workspace.yaml` defines `apps/web`, `apps/api`, `packages/shared`
-- [ ] Root `package.json` defines scripts: `lint`, `typecheck`, `build`, `test:e2e`
-- [ ] `apps/web` is scaffolded with Vite + React 18 + TypeScript + Tailwind CSS (blank page, no content)
-- [ ] `apps/api` is scaffolded with Fastify + TypeScript (health check endpoint `GET /health` returns `{ ok: true }`)
-- [ ] `packages/shared` is a TypeScript library package (empty, compilable)
-- [ ] Each package has its own `tsconfig.json` extending a root base config
-- [ ] ESLint is configured at root with TypeScript rules
-- [ ] `.env.example` lists all required variable names with placeholder values
-- [ ] `.gitignore` is correct
-- [ ] `pnpm install` succeeds from root
-- [ ] `pnpm lint` exits 0
-- [ ] `pnpm typecheck` exits 0
-- [ ] `pnpm build` builds `apps/web` and `apps/api` successfully
+- [x] `pnpm-workspace.yaml` defines `apps/web`, `apps/api`, `packages/shared`
+- [x] Root `package.json` defines scripts: `lint`, `typecheck`, `build`, `test:e2e`
+- [x] `apps/web` is scaffolded with Vite + React 18 + TypeScript + Tailwind CSS (blank page, no content)
+- [x] `apps/api` is scaffolded with Fastify + TypeScript (health check endpoint `GET /health` returns `{ ok: true }`)
+- [x] `packages/shared` is a TypeScript library package (empty, compilable)
+- [x] Each package has its own `tsconfig.json` extending a root base config
+- [x] ESLint is configured at root with TypeScript rules
+- [x] `.env.example` lists all required variable names with placeholder values
+- [x] `.gitignore` is correct
+- [x] `pnpm install` succeeds from root
+- [x] `pnpm lint` exits 0
+- [x] `pnpm typecheck` exits 0
+- [x] `pnpm build` builds `apps/web` and `apps/api` successfully
 
 **Verification:**
 ```
