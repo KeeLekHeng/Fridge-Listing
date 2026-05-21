@@ -149,16 +149,16 @@ pnpm lint
 **Spec:** `specs/auth/spec.md`
 
 **Acceptance Criteria:**
-- [ ] `POST /api/admin/login` validates username and bcrypt-hashed password
-- [ ] On success, sets `auth_token` cookie: HttpOnly, Secure, SameSite=Strict, 1-day expiry
-- [ ] JWT is not returned in the response body
-- [ ] On wrong credentials, returns HTTP 401
-- [ ] `POST /api/admin/logout` clears `auth_token` cookie, returns HTTP 200
-- [ ] `GET /api/admin/me` returns `{ id, username, role }` — no `passwordHash`
-- [ ] Fastify `authenticate` preHandler hook validates JWT from cookie
-- [ ] Hook returns HTTP 401 for missing or expired JWT
-- [ ] A seed/init script creates the admin user from `ADMIN_USERNAME` / `ADMIN_PASSWORD` env vars on first run
-- [ ] `pnpm lint` and `pnpm typecheck` pass
+- [x] `POST /api/admin/login` validates username and bcrypt-hashed password
+- [x] On success, sets `auth_token` cookie: HttpOnly, Secure, SameSite=Strict, 1-day expiry
+- [x] JWT is not returned in the response body
+- [x] On wrong credentials, returns HTTP 401
+- [x] `POST /api/admin/logout` clears `auth_token` cookie, returns HTTP 200
+- [x] `GET /api/admin/me` returns `{ id, username, role }` — no `passwordHash`
+- [x] Fastify `authenticate` preHandler hook validates JWT from cookie
+- [x] Hook returns HTTP 401 for missing or expired JWT
+- [x] A seed/init script creates the admin user from `ADMIN_USERNAME` / `ADMIN_PASSWORD` env vars on first run
+- [x] `pnpm lint` and `pnpm typecheck` pass
 
 **Verification:**
 ```
@@ -195,14 +195,14 @@ curl -X POST http://localhost:3001/api/admin/logout --cookie "auth_token=<token>
 **Spec:** `specs/listings-api/spec.md`
 
 **Acceptance Criteria:**
-- [ ] `GET /api/listings` returns paginated available listings only (`status = "available"`)
-- [ ] Supports query params: `buyEnabled`, `rentEnabled`, `location`, `page` (default 1), `limit` (default 6)
-- [ ] Response includes pagination metadata: `total`, `page`, `limit`, `totalPages`
-- [ ] Response never includes `adminNote` (uses `toPublicListing` serializer)
-- [ ] `GET /api/listings/:id` returns single available listing by id; returns 404 if not found or not available
-- [ ] `GET /api/listings/:id/recommendations` returns up to 4 available listings, sorted same-location-first then price proximity, excluding the current listing
-- [ ] All responses validated by Zod schemas from `packages/shared`
-- [ ] `pnpm lint` and `pnpm typecheck` pass
+- [x] `GET /api/listings` returns paginated available listings only (`status = "available"`)
+- [x] Supports query params: `buyEnabled`, `rentEnabled`, `location`, `page` (default 1), `limit` (default 6)
+- [x] Response includes pagination metadata: `total`, `page`, `limit`, `totalPages`
+- [x] Response never includes `adminNote` (uses `toPublicListing` serializer)
+- [x] `GET /api/listings/:id` returns single available listing by id; returns 404 if not found or not available
+- [x] `GET /api/listings/:id/recommendations` returns up to 4 available listings, sorted same-location-first then price proximity, excluding the current listing
+- [x] All responses validated by Zod schemas from `packages/shared`
+- [x] `pnpm lint` and `pnpm typecheck` pass
 
 **Verification:**
 ```
