@@ -109,17 +109,17 @@ pnpm typecheck
 **Spec:** `specs/listings-api/spec.md`, `specs/data-model/spec.md`
 
 **Acceptance Criteria:**
-- [ ] `ListingStatus` enum exported: `available`, `reserved`, `rented`, `sold`, `unavailable`
-- [ ] `ActionType` enum exported: `status_change`, `price_update`, `note_update`, `image_upload`
-- [ ] `PerformedBy` enum exported: `admin_web`, `telegram_bot`
-- [ ] `CreateListingSchema` Zod schema exported with all required fields and defaults
-- [ ] `UpdateListingSchema` Zod schema exported (all fields optional/partial)
-- [ ] `PublicListingDTO` TypeScript type exported — excludes `adminNote`
-- [ ] `AdminListingDTO` TypeScript type exported — includes `adminNote`
-- [ ] `toPublicListing(listing)` serializer function strips `adminNote`
-- [ ] `toAdminListing(listing)` serializer function includes all fields
-- [ ] `packages/shared` compiles without errors
-- [ ] Both `apps/web` and `apps/api` can import from `packages/shared` without errors
+- [x] `ListingStatus` enum exported: `available`, `reserved`, `rented`, `sold`, `unavailable`
+- [x] `ActionType` enum exported: `status_change`, `price_update`, `note_update`, `image_upload`
+- [x] `PerformedBy` enum exported: `admin_web`, `telegram_bot`
+- [x] `CreateListingSchema` Zod schema exported with all required fields and defaults
+- [x] `UpdateListingSchema` Zod schema exported (all fields optional/partial)
+- [x] `PublicListingDTO` TypeScript type exported — excludes `adminNote`
+- [x] `AdminListingDTO` TypeScript type exported — includes `adminNote`
+- [x] `toPublicListing(listing)` serializer function strips `adminNote`
+- [x] `toAdminListing(listing)` serializer function includes all fields
+- [x] `packages/shared` compiles without errors
+- [x] Both `apps/web` and `apps/api` can import from `packages/shared` without errors
 
 **Verification:**
 ```
