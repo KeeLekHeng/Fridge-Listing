@@ -6,14 +6,23 @@
     "lint": "eslint . && echo ✓ No lint errors",
     "typecheck": "pnpm -r typecheck && echo ✓ No type errors",
     "build": "pnpm --filter @fridge/api build && pnpm --filter @fridge/web build",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "generate": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma"
+    ]
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
+    "@prisma/client": "^5.22.0",
     "eslint": "^9.5.0",
+    "prisma": "^5.22.0",
     "typescript": "^5.5.0",
     "typescript-eslint": "^8.0.0"
   }

@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../apps/api/src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Listing {
+  id                String               @id @default(cuid())
+  listingCode       String               @unique
+  category          String               @default("fridge")
+  brand             String
+  condition         String
+  location          String
+  capacityLitres    Int                  @default(50)
+  buyEnabled        Boolean              @default(false)
+  buyPrice          Decimal?
+  rentEnabled       Boolean              @default(true)
+  rentPrice         Decimal              @default(70)
+  depositPrice      Decimal              @default(40)
+  deliveryAvailable Boolean              @default(true)
+  deliveryPrice     Decimal              @default(15)
+  status            String               @default("available")
+  adminNote         String?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  images            ListingImage[]
+  history           ListingActionHistory[]
+}
+
+model ListingImage {
+  id         String   @id @default(cuid())
+  listingId  String
+  listing    Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  imageUrl   String
+  storageKey String
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model ListingActionHistory {
+  id          String   @id @default(cuid())
+  listingId   String
+  listing     Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  actionType  String
+  oldValue    String?
+  newValue    String?
+  note        String?
+  performedBy String
+  createdAt   DateTime @default(now())
+}

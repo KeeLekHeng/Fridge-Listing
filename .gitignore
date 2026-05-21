@@ -37,13 +37,16 @@ htmlcov/
 .mypy_cache/
 .ruff_cache/
 
-# Node (if you add a frontend/API later)
+# Node
 node_modules/
 dist/
 build/
 .next/
 .nuxt/
 *.tsbuildinfo
+
+# Prisma generated client
+apps/api/src/generated/
 
 # Tooling / local artifacts
 *.local

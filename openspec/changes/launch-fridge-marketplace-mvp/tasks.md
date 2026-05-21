@@ -73,12 +73,12 @@ curl http://localhost:3001/health
 **Spec:** `specs/data-model/spec.md`
 
 **Acceptance Criteria:**
-- [ ] `prisma/schema.prisma` defines `User`, `Listing`, `ListingImage`, `ListingActionHistory` models exactly as specified
-- [ ] All field types, defaults, relations, and cascade rules match the spec
-- [ ] Initial migration file is generated in `prisma/migrations/`
-- [ ] `pnpm prisma migrate dev` succeeds against a local PostgreSQL instance
-- [ ] `pnpm prisma generate` generates the Prisma client without errors
-- [ ] Prisma client is instantiated in `apps/api/src/lib/prisma.ts` as a singleton
+- [x] `prisma/schema.prisma` defines `User`, `Listing`, `ListingImage`, `ListingActionHistory` models exactly as specified
+- [x] All field types, defaults, relations, and cascade rules match the spec
+- [x] Initial migration file is generated in `prisma/migrations/`
+- [x] `pnpm prisma migrate dev` succeeds against a local PostgreSQL instance
+- [x] `pnpm prisma generate` generates the Prisma client without errors
+- [x] Prisma client is instantiated in `apps/api/src/lib/prisma.ts` as a singleton
 
 **Verification:**
 ```

@@ -8,6 +8,7 @@ export default tseslint.config(
       '**/node_modules/**',
       '**/build/**',
       '**/.next/**',
+      '**/src/generated/**',
       'eslint.config.mjs',
     ],
   },
