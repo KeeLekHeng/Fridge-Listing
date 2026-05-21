@@ -1,6 +1,7 @@
 import Fastify from 'fastify'
 import cookie from '@fastify/cookie'
 import { authRoutes } from './routes/admin/auth'
+import { adminListingRoutes } from './routes/admin/listings'
 import { listingRoutes } from './routes/listings'
 
 const app = Fastify({ logger: true })
@@ -12,6 +13,7 @@ app.get('/health', async () => {
 })
 
 app.register(authRoutes, { prefix: '/api/admin' })
+app.register(adminListingRoutes, { prefix: '/api/admin' })
 app.register(listingRoutes, { prefix: '/api' })
 
 const start = async () => {

@@ -235,13 +235,13 @@ curl "http://localhost:3001/api/listings/<id>/recommendations"
 **Spec:** `specs/listings-api/spec.md`
 
 **Acceptance Criteria:**
-- [ ] `GET /api/admin/listings` returns all listings (any status) with `adminNote`, requires JWT
-- [ ] Supports query params: `search`, `status`, `location`, `page`, `limit`
-- [ ] `POST /api/admin/listings` creates listing, auto-generates `listingCode`, returns created listing
-- [ ] `PATCH /api/admin/listings/:id` updates allowed fields, returns updated listing
-- [ ] All endpoints require valid JWT; return 401 without it
-- [ ] Request bodies validated by Zod schemas; invalid requests return 400
-- [ ] `pnpm lint` and `pnpm typecheck` pass
+- [x] `GET /api/admin/listings` returns all listings (any status) with `adminNote`, requires JWT
+- [x] Supports query params: `search`, `status`, `location`, `page`, `limit`
+- [x] `POST /api/admin/listings` creates listing, auto-generates `listingCode`, returns created listing
+- [x] `PATCH /api/admin/listings/:id` updates allowed fields, returns updated listing
+- [x] All endpoints require valid JWT; return 401 without it
+- [x] Request bodies validated by Zod schemas; invalid requests return 400
+- [x] `pnpm lint` and `pnpm typecheck` pass
 
 **Verification:**
 ```
