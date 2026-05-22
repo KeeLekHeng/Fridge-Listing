@@ -1,0 +1,63 @@
+import type { FastifyInstance } from 'fastify'
+import { StatusUpdateSchema, ActionHistoryQuerySchema } from '@fridge/shared'
+import { prisma } from '../../lib/prisma'
+import { authenticate } from '../../plugins/authenticate'
+
+export async function statusRoutes(app: FastifyInstance) {
+  app.addHook('preHandler', authenticate)
+
+  app.patch('/listings/:id/status', async (request, reply) => {
+    const { id } = request.params as { id: string }
+    const parsed = StatusUpdateSchema.safeParse(request.body)
+    if (!parsed.success) return reply.status(400).send({ error: parsed.error.flatten() })
+
+    const { status } = parsed.data
+
+    const existing = await prisma.listing.findUnique({
+      where: { id },
+      select: { id: true, status: true },
+    })
+    if (!existing) return reply.status(404).send({ error: 'Not found' })
+
+    const [updated] = await prisma.$transaction([
+      prisma.listing.update({ where: { id }, data: { status } }),
+      prisma.listingActionHistory.create({
+        data: {
+          listingId: id,
+          actionType: 'status_change',
+          oldValue: existing.status,
+          newValue: status,
+          performedBy: 'admin_web',
+        },
+      }),
+    ])
+
+    return reply.send({ id: updated.id, status: updated.status })
+  })
+
+  app.get('/action-history', async (request, reply) => {
+    const parsed = ActionHistoryQuerySchema.safeParse(request.query)
+    if (!parsed.success) return reply.status(400).send({ error: parsed.error.flatten() })
+
+    const { listingId, page, limit } = parsed.data
+    const where = listingId ? { listingId } : {}
+
+    const [total, rows] = await Promise.all([
+      prisma.listingActionHistory.count({ where }),
+      prisma.listingActionHistory.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+    ])
+
+    return reply.send({
+      data: rows,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    })
+  })
+}

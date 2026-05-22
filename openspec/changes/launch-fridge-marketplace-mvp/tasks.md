@@ -317,12 +317,12 @@ pnpm typecheck
 **Spec:** `specs/listings-api/spec.md`
 
 **Acceptance Criteria:**
-- [ ] `PATCH /api/admin/listings/:id/status` updates listing status and writes `ListingActionHistory` record
-- [ ] History record includes `actionType = "status_change"`, `oldValue`, `newValue`, `performedBy = "admin_web"`
-- [ ] `GET /api/admin/action-history` returns paginated history records, optionally filtered by `listingId`
-- [ ] Both endpoints require valid JWT; return 401 without it
-- [ ] Status value is validated against `ListingStatus` enum; invalid values return 400
-- [ ] `pnpm lint` and `pnpm typecheck` pass
+- [x] `PATCH /api/admin/listings/:id/status` updates listing status and writes `ListingActionHistory` record
+- [x] History record includes `actionType = "status_change"`, `oldValue`, `newValue`, `performedBy = "admin_web"`
+- [x] `GET /api/admin/action-history` returns paginated history records, optionally filtered by `listingId`
+- [x] Both endpoints require valid JWT; return 401 without it
+- [x] Status value is validated against `ListingStatus` enum; invalid values return 400
+- [x] `pnpm lint` and `pnpm typecheck` pass
 
 **Verification:**
 ```
