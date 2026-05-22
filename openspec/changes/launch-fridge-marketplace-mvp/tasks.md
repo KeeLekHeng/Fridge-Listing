@@ -274,15 +274,15 @@ curl http://localhost:3001/api/admin/listings
 **Spec:** `specs/image-upload/spec.md`
 
 **Acceptance Criteria:**
-- [ ] `POST /api/admin/listings/:id/images` accepts multipart form with up to 3 files
-- [ ] Validates MIME type: only `image/jpeg`, `image/png`, `image/webp` accepted; others return 400
-- [ ] Validates file size: max 5 MB per file; oversized files return 400
-- [ ] Rejects upload if listing already has 3 images; returns 400
-- [ ] Uploads accepted files to S3-compatible storage with key `listings/<listingId>/<uuid>.<ext>`
-- [ ] Writes `ListingImage` rows with `imageUrl`, `storageKey`, `sortOrder`
-- [ ] `DELETE /api/admin/listings/:id/images/:imageId` deletes the DB row; returns 204
-- [ ] Endpoint requires valid JWT; returns 401 without it
-- [ ] `pnpm lint` and `pnpm typecheck` pass
+- [x] `POST /api/admin/listings/:id/images` accepts multipart form with up to 3 files
+- [x] Validates MIME type: only `image/jpeg`, `image/png`, `image/webp` accepted; others return 400
+- [x] Validates file size: max 2 MB per file; oversized files return 400
+- [x] Rejects upload if listing already has 3 images; returns 400
+- [x] Uploads accepted files to S3-compatible storage with key `listings/<listingId>/<uuid>.webp`
+- [x] Writes `ListingImage` rows with `imageUrl`, `storageKey`, `sortOrder`
+- [x] `DELETE /api/admin/listings/:id/images/:imageId` attempts storage deletion, logs failure, always deletes DB row; returns 204
+- [x] Endpoint requires valid JWT; returns 401 without it
+- [x] `pnpm lint` and `pnpm typecheck` pass
 
 **Verification:**
 ```
