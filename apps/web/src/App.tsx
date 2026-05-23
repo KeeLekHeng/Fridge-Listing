@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HomePage } from './pages/HomePage'
 import { ListingDetailPage } from './pages/ListingDetailPage'
 import { ShortlistPage } from './pages/ShortlistPage'
+import { AdminLoginPage } from './pages/AdminLoginPage'
+import { RequireAuth } from './components/RequireAuth'
 
 // Placeholder stubs for routes not yet built — keeps routing wired without 404s
 function ComingSoon({ label }: { label: string }) {
@@ -21,11 +23,15 @@ export default function App() {
         <Route path="/listing/:id" element={<ListingDetailPage />} />
         <Route path="/shortlist" element={<ShortlistPage />} />
 
-        {/* Admin routes */}
-        <Route path="/manage/login" element={<ComingSoon label="/manage/login" />} />
-        <Route path="/manage" element={<ComingSoon label="/manage" />} />
-        <Route path="/manage/listings/new" element={<ComingSoon label="/manage/listings/new" />} />
-        <Route path="/manage/listings/:id/edit" element={<ComingSoon label="/manage/listings/:id/edit" />} />
+        {/* Admin — public */}
+        <Route path="/manage/login" element={<AdminLoginPage />} />
+
+        {/* Admin — protected (auth-gated) */}
+        <Route element={<RequireAuth />}>
+          <Route path="/manage" element={<ComingSoon label="/manage" />} />
+          <Route path="/manage/listings/new" element={<ComingSoon label="/manage/listings/new" />} />
+          <Route path="/manage/listings/:id/edit" element={<ComingSoon label="/manage/listings/:id/edit" />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )

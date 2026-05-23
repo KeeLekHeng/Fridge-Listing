@@ -518,14 +518,14 @@ pnpm build
 **Spec:** `specs/auth/spec.md`, `specs/admin-ui/spec.md`
 
 **Acceptance Criteria:**
-- [ ] Route `/manage/login` renders username/password form
-- [ ] Form submits to `POST /api/admin/login`
-- [ ] On success, redirects to `/manage`
-- [ ] On failure, shows generic error ("Invalid credentials") — no username/password hint
-- [ ] All routes under `/manage/*` (except `/manage/login`) redirect unauthenticated users to `/manage/login`
-- [ ] Login page is not linked from any public buyer page
-- [ ] `pnpm lint` and `pnpm typecheck` pass
-- [ ] `pnpm build` succeeds
+- [x] Route `/manage/login` renders username/password form
+- [x] Form submits to `POST /api/admin/login`
+- [x] On success, redirects to `/manage`
+- [x] On failure, shows generic error ("Invalid credentials") — no username/password hint
+- [x] All routes under `/manage/*` (except `/manage/login`) redirect unauthenticated users to `/manage/login`
+- [x] Login page is not linked from any public buyer page
+- [x] `pnpm lint` and `pnpm typecheck` pass
+- [x] `pnpm build` succeeds
 
 **Verification:**
 ```
