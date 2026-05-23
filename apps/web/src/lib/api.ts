@@ -74,6 +74,26 @@ async function patch<T>(path: string, body: unknown): Promise<T> {
   return res.json() as Promise<T>
 }
 
+async function del(path: string): Promise<void> {
+  const res = await fetch(`${BASE}${path}`, {
+    method: 'DELETE',
+    credentials: 'same-origin',
+  })
+  if (!res.ok) throw new Error(`API ${res.status}: ${path}`)
+}
+
+async function uploadFile<T>(path: string, file: File): Promise<T> {
+  const form = new FormData()
+  form.append('file', file)
+  const res = await fetch(`${BASE}${path}`, {
+    method: 'POST',
+    body: form,
+    credentials: 'same-origin',
+  })
+  if (!res.ok) throw new Error(`API ${res.status}: ${path}`)
+  return res.json() as Promise<T>
+}
+
 export const api = {
   listings: {
     list: (params: ListingsParams) =>
@@ -102,8 +122,20 @@ export const api = {
       list: (params?: AdminListingsParams) =>
         get<AdminListingsResponse>(`${BASE}/admin/listings`, params as Record<string, string | number | boolean | undefined>),
 
+      get: (id: string) => get<AdminListingDTO>(`${BASE}/admin/listings/${id}`),
+
+      create: (data: unknown) => post<AdminListingDTO>('/admin/listings', data),
+
+      update: (id: string, data: unknown) => patch<AdminListingDTO>(`/admin/listings/${id}`, data),
+
       updateStatus: (id: string, status: ListingStatus) =>
         patch<{ id: string; status: string }>(`/admin/listings/${id}/status`, { status }),
+
+      uploadImage: (id: string, file: File) =>
+        uploadFile<AdminListingDTO['images']>(`/admin/listings/${id}/images`, file),
+
+      deleteImage: (listingId: string, imageId: string) =>
+        del(`/admin/listings/${listingId}/images/${imageId}`),
     },
   },
 }

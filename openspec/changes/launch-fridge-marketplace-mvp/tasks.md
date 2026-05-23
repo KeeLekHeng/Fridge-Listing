@@ -594,14 +594,14 @@ pnpm build
 **Spec:** `specs/admin-ui/spec.md`
 
 **Acceptance Criteria:**
-- [ ] Routes `/manage/listings/new` and `/manage/listings/:id/edit` render the listing form
-- [ ] All required fields present with correct defaults
-- [ ] Inline validation errors per field using Zod schema
-- [ ] Image upload section shows existing images with delete buttons and allows uploading up to 3
-- [ ] On successful save, redirects to `/manage`
-- [ ] Edit form pre-fills with existing listing values
-- [ ] `pnpm lint` and `pnpm typecheck` pass
-- [ ] `pnpm build` succeeds
+- [x] Routes `/manage/listings/new` and `/manage/listings/:id/edit` render the listing form
+- [x] All required fields present with correct defaults
+- [x] Inline validation errors per field using Zod schema
+- [x] Image upload section shows existing images with delete buttons and allows uploading up to 3
+- [x] On successful save, redirects to `/manage`
+- [x] Edit form pre-fills with existing listing values
+- [x] `pnpm lint` and `pnpm typecheck` pass
+- [x] `pnpm build` succeeds
 
 **Verification:**
 ```
