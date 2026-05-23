@@ -666,16 +666,16 @@ pnpm build
 **Spec:** `specs/e2e-tests/spec.md`
 
 **Acceptance Criteria:**
-- [ ] Test seed creates: 2 available listings, 1 reserved listing, 1 unavailable listing
-- [ ] REQ-E2E-005: Buyer views listing grid — passes
-- [ ] REQ-E2E-006: Buyer filters by rent — passes
-- [ ] REQ-E2E-007: Buyer opens listing detail — passes
-- [ ] REQ-E2E-008: Buyer adds to shortlist — passes
-- [ ] REQ-E2E-009: Buyer cannot add more than 5 — passes
-- [ ] REQ-E2E-010: Buyer removes from shortlist — passes
-- [ ] REQ-E2E-011: Telegram enquiry button href contains `t.me/Lucas_Keee` — passes
-- [ ] REQ-E2E-012: Unavailable/reserved listings hidden from buyer grid — passes
-- [ ] `pnpm test:e2e` exits 0
+- [x] Test seed creates: 2 available listings, 1 reserved listing, 1 unavailable listing
+- [x] REQ-E2E-005: Buyer views listing grid — passes
+- [x] REQ-E2E-006: Buyer filters by rent — passes
+- [x] REQ-E2E-007: Buyer opens listing detail — passes
+- [x] REQ-E2E-008: Buyer adds to shortlist — passes
+- [x] REQ-E2E-009: Buyer cannot add more than 5 — passes
+- [x] REQ-E2E-010: Buyer removes from shortlist — passes
+- [x] REQ-E2E-011: Telegram enquiry button href contains `t.me/Lucas_Keee` — passes
+- [x] REQ-E2E-012: Unavailable/reserved listings hidden from buyer grid — passes
+- [x] `pnpm test:e2e` exits 0
 
 **Verification:**
 ```
