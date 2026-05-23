@@ -105,7 +105,17 @@ export async function imageRoutes(app: FastifyInstance) {
       })
     }
 
-    await prisma.listingImage.createMany({ data: created })
+    await prisma.$transaction([
+      prisma.listingImage.createMany({ data: created }),
+      prisma.listingActionHistory.create({
+        data: {
+          listingId: id,
+          actionType: 'image_upload',
+          newValue: `${rawFiles.length} image${rawFiles.length === 1 ? '' : 's'} uploaded`,
+          performedBy: 'admin_web',
+        },
+      }),
+    ])
 
     const images = await prisma.listingImage.findMany({
       where: { listingId: id },
@@ -131,7 +141,17 @@ export async function imageRoutes(app: FastifyInstance) {
       app.log.error({ err, storageKey: image.storageKey }, 'Storage deletion failed')
     }
 
-    await prisma.listingImage.delete({ where: { id: imageId } })
+    await prisma.$transaction([
+      prisma.listingImage.delete({ where: { id: imageId } }),
+      prisma.listingActionHistory.create({
+        data: {
+          listingId: id,
+          actionType: 'image_delete',
+          oldValue: imageId,
+          performedBy: 'admin_web',
+        },
+      }),
+    ])
 
     return reply.status(204).send()
   })

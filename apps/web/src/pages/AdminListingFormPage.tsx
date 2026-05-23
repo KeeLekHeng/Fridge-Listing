@@ -222,6 +222,17 @@ export function AdminListingFormPage() {
         <h1 className="text-[15px] font-semibold text-ink tracking-[-0.01em]">
           {isEdit ? 'Edit listing' : 'Create listing'}
         </h1>
+        {isEdit && id && (
+          <>
+            <span className="flex-1" />
+            <Link
+              to={`/manage/listings/${id}/history`}
+              className="text-[13px] text-ink-3 hover:text-ink transition-colors"
+            >
+              View history →
+            </Link>
+          </>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} className="max-w-[680px] mx-auto px-5 py-6 flex flex-col gap-6">

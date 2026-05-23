@@ -40,6 +40,25 @@ export interface AdminListingsParams {
   limit?: number
 }
 
+export interface ActionHistoryRecord {
+  id: string
+  listingId: string
+  actionType: string
+  oldValue: string | null
+  newValue: string | null
+  note: string | null
+  performedBy: string
+  createdAt: string
+}
+
+export interface ActionHistoryResponse {
+  data: ActionHistoryRecord[]
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+}
+
 async function get<T>(path: string, params?: Record<string, string | number | boolean | undefined>): Promise<T> {
   const url = new URL(path, window.location.origin)
   if (params) {
@@ -136,6 +155,11 @@ export const api = {
 
       deleteImage: (listingId: string, imageId: string) =>
         del(`/admin/listings/${listingId}/images/${imageId}`),
+    },
+
+    history: {
+      list: (listingId: string, page = 1) =>
+        get<ActionHistoryResponse>(`${BASE}/admin/action-history`, { listingId, page, limit: 20 }),
     },
   },
 }

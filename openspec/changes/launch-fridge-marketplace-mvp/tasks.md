@@ -632,11 +632,11 @@ pnpm build
 **Spec:** `specs/admin-ui/spec.md`
 
 **Acceptance Criteria:**
-- [ ] Action history is accessible from the dashboard and from the listing edit page
-- [ ] Displays paginated records with: listing code, action type (readable label), old value, new value, performed by, date/time
-- [ ] Works for actions performed by both admin web and Telegram bot
-- [ ] `pnpm lint` and `pnpm typecheck` pass
-- [ ] `pnpm build` succeeds
+- [x] Action history is accessible from the dashboard and from the listing edit page
+- [x] Displays paginated records with: listing code, action type (readable label), old value, new value, performed by, date/time
+- [x] Works for actions performed by both admin web and Telegram bot
+- [x] `pnpm lint` and `pnpm typecheck` pass
+- [x] `pnpm build` succeeds
 
 **Verification:**
 ```

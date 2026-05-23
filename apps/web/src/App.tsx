@@ -5,16 +5,9 @@ import { ShortlistPage } from './pages/ShortlistPage'
 import { AdminLoginPage } from './pages/AdminLoginPage'
 import { AdminDashboardPage } from './pages/AdminDashboardPage'
 import { AdminListingFormPage } from './pages/AdminListingFormPage'
+import { AdminHistoryPage } from './pages/AdminHistoryPage'
 import { RequireAuth } from './components/RequireAuth'
 
-// Placeholder stubs for routes not yet built — keeps routing wired without 404s
-function ComingSoon({ label }: { label: string }) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-surface">
-      <p className="text-ink-3 text-[14px] font-mono">{label} — coming soon</p>
-    </div>
-  )
-}
 
 export default function App() {
   return (
@@ -33,7 +26,7 @@ export default function App() {
           <Route path="/manage" element={<AdminDashboardPage />} />
           <Route path="/manage/listings/new" element={<AdminListingFormPage />} />
           <Route path="/manage/listings/:id/edit" element={<AdminListingFormPage />} />
-          <Route path="/manage/listings/:id/history" element={<ComingSoon label="/manage/listings/:id/history" />} />
+          <Route path="/manage/listings/:id/history" element={<AdminHistoryPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
