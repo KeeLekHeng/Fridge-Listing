@@ -1,4 +1,4 @@
-import type { PublicListingDTO } from '@fridge/shared'
+import type { PublicListingDTO, AdminListingDTO, ListingStatus } from '@fridge/shared'
 
 const BASE = '/api'
 
@@ -24,6 +24,22 @@ export interface AdminMe {
   role: string
 }
 
+export interface AdminListingsResponse {
+  data: AdminListingDTO[]
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+}
+
+export interface AdminListingsParams {
+  search?: string
+  status?: string
+  location?: string
+  page?: number
+  limit?: number
+}
+
 async function get<T>(path: string, params?: Record<string, string | number | boolean | undefined>): Promise<T> {
   const url = new URL(path, window.location.origin)
   if (params) {
@@ -41,6 +57,17 @@ async function post<T>(path: string, body?: unknown): Promise<T> {
     method: 'POST',
     headers: body !== undefined ? { 'Content-Type': 'application/json' } : {},
     body: body !== undefined ? JSON.stringify(body) : undefined,
+    credentials: 'same-origin',
+  })
+  if (!res.ok) throw new Error(`API ${res.status}: ${path}`)
+  return res.json() as Promise<T>
+}
+
+async function patch<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
     credentials: 'same-origin',
   })
   if (!res.ok) throw new Error(`API ${res.status}: ${path}`)
@@ -70,5 +97,13 @@ export const api = {
     me: () => get<AdminMe>(`${BASE}/admin/me`),
 
     logout: () => post<{ ok: boolean }>('/admin/logout'),
+
+    listings: {
+      list: (params?: AdminListingsParams) =>
+        get<AdminListingsResponse>(`${BASE}/admin/listings`, params as Record<string, string | number | boolean | undefined>),
+
+      updateStatus: (id: string, status: ListingStatus) =>
+        patch<{ id: string; status: string }>(`/admin/listings/${id}/status`, { status }),
+    },
   },
 }

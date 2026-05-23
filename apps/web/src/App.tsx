@@ -3,6 +3,7 @@ import { HomePage } from './pages/HomePage'
 import { ListingDetailPage } from './pages/ListingDetailPage'
 import { ShortlistPage } from './pages/ShortlistPage'
 import { AdminLoginPage } from './pages/AdminLoginPage'
+import { AdminDashboardPage } from './pages/AdminDashboardPage'
 import { RequireAuth } from './components/RequireAuth'
 
 // Placeholder stubs for routes not yet built — keeps routing wired without 404s
@@ -28,9 +29,10 @@ export default function App() {
 
         {/* Admin — protected (auth-gated) */}
         <Route element={<RequireAuth />}>
-          <Route path="/manage" element={<ComingSoon label="/manage" />} />
+          <Route path="/manage" element={<AdminDashboardPage />} />
           <Route path="/manage/listings/new" element={<ComingSoon label="/manage/listings/new" />} />
           <Route path="/manage/listings/:id/edit" element={<ComingSoon label="/manage/listings/:id/edit" />} />
+          <Route path="/manage/listings/:id/history" element={<ComingSoon label="/manage/listings/:id/history" />} />
         </Route>
       </Routes>
     </BrowserRouter>

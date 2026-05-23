@@ -555,16 +555,16 @@ pnpm build
 **Spec:** `specs/admin-ui/spec.md`
 
 **Acceptance Criteria:**
-- [ ] Route `/manage` renders a table of all listings (any status)
-- [ ] Columns: image thumbnail, listing code, brand, location, buy price, rent price, deposit, status badge, updated date, actions
-- [ ] Search input filters by listing code or brand
-- [ ] Filter controls for status and location
-- [ ] "Create listing" button navigates to `/manage/listings/new`
-- [ ] Actions column: Edit link, Change Status button, View History button
-- [ ] Logout button calls `POST /api/admin/logout` and redirects to `/manage/login`
-- [ ] Status change quick-action updates badge in table without full page reload
-- [ ] `pnpm lint` and `pnpm typecheck` pass
-- [ ] `pnpm build` succeeds
+- [x] Route `/manage` renders a table of all listings (any status)
+- [x] Columns: image thumbnail, listing code, brand, location, buy price, rent price, deposit, status badge, updated date, actions
+- [x] Search input filters by listing code or brand
+- [x] Filter controls for status and location
+- [x] "Create listing" button navigates to `/manage/listings/new`
+- [x] Actions column: Edit link, Change Status button, View History button
+- [x] Logout button calls `POST /api/admin/logout` and redirects to `/manage/login`
+- [x] Status change quick-action updates badge in table without full page reload
+- [x] `pnpm lint` and `pnpm typecheck` pass
+- [x] `pnpm build` succeeds
 
 **Verification:**
 ```
