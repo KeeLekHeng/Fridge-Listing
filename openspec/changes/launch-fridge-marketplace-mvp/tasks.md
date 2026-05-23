@@ -353,16 +353,16 @@ pnpm typecheck
 **Spec:** `specs/telegram-bot/spec.md`
 
 **Acceptance Criteria:**
-- [ ] `POST /api/telegram/webhook` validates `X-Telegram-Bot-Api-Secret-Token` header; returns 403 if invalid
-- [ ] Always returns HTTP 200 to Telegram regardless of processing outcome
-- [ ] Checks `message.chat.id` against `TELEGRAM_ADMIN_CHAT_ID`; silently ignores non-admin messages
-- [ ] Implements all 8 commands: `/status`, `/reserve`, `/available`, `/rented`, `/sold`, `/unavailable`, `/price`, `/note`
-- [ ] Listing code matching is case-insensitive
-- [ ] Status-changing commands write `ListingActionHistory` with `performedBy = "telegram_bot"`
-- [ ] `/price` updates only provided price fields; omitted fields are unchanged
-- [ ] Bot replies with confirmation or error messages as specified
-- [ ] Uses shared listing service logic (no duplicated DB queries inline)
-- [ ] `pnpm lint` and `pnpm typecheck` pass
+- [x] `POST /api/telegram/webhook` validates `X-Telegram-Bot-Api-Secret-Token` header; returns 403 if invalid
+- [x] Always returns HTTP 200 to Telegram regardless of processing outcome
+- [x] Checks `message.chat.id` against `TELEGRAM_ADMIN_CHAT_ID`; silently ignores non-admin messages
+- [x] Implements all 8 commands: `/status`, `/reserve`, `/available`, `/rented`, `/sold`, `/unavailable`, `/price`, `/note`
+- [x] Listing code matching is case-insensitive
+- [x] Status-changing commands write `ListingActionHistory` with `performedBy = "telegram_bot"`
+- [x] `/price` updates only provided price fields; omitted fields are unchanged
+- [x] Bot replies with confirmation or error messages as specified
+- [x] Uses shared listing service logic (no duplicated DB queries inline)
+- [x] `pnpm lint` and `pnpm typecheck` pass
 
 **Verification:**
 ```

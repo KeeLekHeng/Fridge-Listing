@@ -5,6 +5,7 @@ import { authRoutes } from './routes/admin/auth'
 import { adminListingRoutes } from './routes/admin/listings'
 import { imageRoutes } from './routes/admin/images'
 import { statusRoutes } from './routes/admin/status'
+import { telegramWebhookRoutes } from './routes/telegram/webhook'
 import { listingRoutes } from './routes/listings'
 
 const app = Fastify({ logger: true })
@@ -20,6 +21,7 @@ app.register(authRoutes, { prefix: '/api/admin' })
 app.register(adminListingRoutes, { prefix: '/api/admin' })
 app.register(imageRoutes, { prefix: '/api/admin' })
 app.register(statusRoutes, { prefix: '/api/admin' })
+app.register(telegramWebhookRoutes, { prefix: '/api' })
 app.register(listingRoutes, { prefix: '/api' })
 
 const start = async () => {

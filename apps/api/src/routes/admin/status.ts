@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify'
 import { StatusUpdateSchema, ActionHistoryQuerySchema } from '@fridge/shared'
 import { prisma } from '../../lib/prisma'
 import { authenticate } from '../../plugins/authenticate'
+import { changeListingStatus } from '../../services/listing'
 
 export async function statusRoutes(app: FastifyInstance) {
   app.addHook('preHandler', authenticate)
@@ -19,18 +20,7 @@ export async function statusRoutes(app: FastifyInstance) {
     })
     if (!existing) return reply.status(404).send({ error: 'Not found' })
 
-    const [updated] = await prisma.$transaction([
-      prisma.listing.update({ where: { id }, data: { status } }),
-      prisma.listingActionHistory.create({
-        data: {
-          listingId: id,
-          actionType: 'status_change',
-          oldValue: existing.status,
-          newValue: status,
-          performedBy: 'admin_web',
-        },
-      }),
-    ])
+    const updated = await changeListingStatus(id, existing.status, status, 'admin_web')
 
     return reply.send({ id: updated.id, status: updated.status })
   })
