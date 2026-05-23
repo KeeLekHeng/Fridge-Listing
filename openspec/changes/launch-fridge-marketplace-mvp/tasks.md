@@ -396,15 +396,15 @@ pnpm typecheck
 **Spec:** `specs/buyer-ui/spec.md`
 
 **Acceptance Criteria:**
-- [ ] Route `/` renders a grid of available listing cards
-- [ ] Each card shows: main image, brand, 50L badge, buy price (if buyEnabled), rent + deposit (if rentEnabled), location, delivery badge
-- [ ] 6 listings per page with pagination controls
-- [ ] Filter bar with buy/rent toggle and location dropdown
-- [ ] Filters update URL query string
-- [ ] Only `status = "available"` listings are shown (enforced by API, verified in UI)
-- [ ] Layout is fully usable at 375px viewport width (mobile web browser — Safari/Chrome)
-- [ ] `pnpm lint` and `pnpm typecheck` pass
-- [ ] `pnpm build` succeeds
+- [x] Route `/` renders a grid of available listing cards
+- [x] Each card shows: main image, brand, 50L badge, buy price (if buyEnabled), rent + deposit (if rentEnabled), location, delivery badge
+- [x] 6 listings per page with pagination controls
+- [x] Filter bar with buy/rent toggle and location dropdown
+- [x] Filters update URL query string
+- [x] Only `status = "available"` listings are shown (enforced by API, verified in UI)
+- [x] Layout is fully usable at 375px viewport width (mobile web browser — Safari/Chrome)
+- [x] `pnpm lint` and `pnpm typecheck` pass
+- [x] `pnpm build` succeeds
 
 **Verification:**
 ```
@@ -437,15 +437,15 @@ pnpm build
 **Spec:** `specs/buyer-ui/spec.md`
 
 **Acceptance Criteria:**
-- [ ] Route `/listing/:id` renders listing detail
-- [ ] Shows image gallery (up to 3), brand, location, condition, 50L label, buy/rent prices, deposit, delivery note
-- [ ] "Add to shortlist" button adds to localStorage; disabled if already in shortlist or shortlist is full (5)
-- [ ] Telegram enquiry button generates correct `t.me/Lucas_Keee` deep link with prefilled message
-- [ ] Similar listings section shows up to 4 listings (same location first, then price proximity)
-- [ ] Displays not-found message if listing does not exist or is not available
-- [ ] Fully usable at 375px viewport width (mobile web browser)
-- [ ] `pnpm lint` and `pnpm typecheck` pass
-- [ ] `pnpm build` succeeds
+- [x] Route `/listing/:id` renders listing detail
+- [x] Shows image gallery (up to 3), brand, location, condition, 50L label, buy/rent prices, deposit, delivery note
+- [x] "Add to shortlist" button adds to localStorage; disabled if already in shortlist or shortlist is full (5)
+- [x] Telegram enquiry button generates correct `t.me/Lucas_Keee` deep link with prefilled message
+- [x] Similar listings section shows up to 4 listings (same location first, then price proximity)
+- [x] Displays not-found message if listing does not exist or is not available
+- [x] Fully usable at 375px viewport width (mobile web browser)
+- [x] `pnpm lint` and `pnpm typecheck` pass
+- [x] `pnpm build` succeeds
 
 **Verification:**
 ```
