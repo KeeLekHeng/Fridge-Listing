@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HomePage } from './pages/HomePage'
 import { ListingDetailPage } from './pages/ListingDetailPage'
+import { ShortlistPage } from './pages/ShortlistPage'
 
 // Placeholder stubs for routes not yet built — keeps routing wired without 404s
 function ComingSoon({ label }: { label: string }) {
@@ -18,7 +19,7 @@ export default function App() {
         {/* Buyer routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/listing/:id" element={<ListingDetailPage />} />
-        <Route path="/shortlist" element={<ComingSoon label="/shortlist" />} />
+        <Route path="/shortlist" element={<ShortlistPage />} />
 
         {/* Admin routes */}
         <Route path="/manage/login" element={<ComingSoon label="/manage/login" />} />

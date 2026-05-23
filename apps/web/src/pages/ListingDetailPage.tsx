@@ -133,11 +133,16 @@ export function ListingDetailPage() {
             onClick={handleShortlist}
             aria-label={isShortlisted ? 'Remove from shortlist' : 'Add to shortlist'}
             className={clsx(
-              'w-10 h-10 flex items-center justify-center rounded-full -mr-1 transition-colors',
+              'relative w-10 h-10 flex items-center justify-center rounded-full -mr-1 transition-colors',
               isShortlisted ? 'bg-ink' : 'hover:bg-surface',
             )}
           >
             <IconHeart size={18} filled={isShortlisted} />
+            {shortlist.count > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-0.5 rounded-full bg-accent text-white text-[9px] font-bold flex items-center justify-center leading-none">
+                {shortlist.count}
+              </span>
+            )}
           </button>
         </div>
 

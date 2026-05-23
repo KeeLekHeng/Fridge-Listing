@@ -477,17 +477,17 @@ pnpm build
 **Spec:** `specs/buyer-ui/spec.md`
 
 **Acceptance Criteria:**
-- [ ] Route `/shortlist` renders shortlisted listings from localStorage
-- [ ] Each item shows main image, listing code, brand, buy/rent price, and a remove button
-- [ ] Remove button removes the item from localStorage and updates the list
-- [ ] "Send all to Telegram" generates a single Telegram deep link with all shortlisted listings' details
-- [ ] Shortlist count visible in site navigation on all pages
-- [ ] "Add to shortlist" on detail page shows "Already in shortlist" if item is present
-- [ ] Maximum 5 items enforced; error shown on attempt to add 6th
-- [ ] Word "shortlist" used throughout; "cart" does not appear
-- [ ] Fully usable at 375px viewport width (mobile web browser)
-- [ ] `pnpm lint` and `pnpm typecheck` pass
-- [ ] `pnpm build` succeeds
+- [x] Route `/shortlist` renders shortlisted listings from localStorage
+- [x] Each item shows main image, listing code, brand, buy/rent price, and a remove button
+- [x] Remove button removes the item from localStorage and updates the list
+- [x] "Send all to Telegram" generates a single Telegram deep link with all shortlisted listings' details
+- [x] Shortlist count visible in site navigation on all pages
+- [x] "Add to shortlist" on detail page shows "Already in shortlist" if item is present
+- [x] Maximum 5 items enforced; error shown on attempt to add 6th
+- [x] Word "shortlist" used throughout; "cart" does not appear
+- [x] Fully usable at 375px viewport width (mobile web browser)
+- [x] `pnpm lint` and `pnpm typecheck` pass
+- [x] `pnpm build` succeeds
 
 **Verification:**
 ```
