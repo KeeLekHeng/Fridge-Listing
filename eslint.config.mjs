@@ -10,6 +10,7 @@ export default tseslint.config(
       '**/.next/**',
       '**/src/generated/**',
       'eslint.config.mjs',
+      'FridgeListingFrontendDesign/**',
     ],
   },
   {
