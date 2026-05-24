@@ -39,9 +39,14 @@ export default async function globalSetup() {
   const prisma = new PrismaClient()
 
   try {
-    // Remove any previous E2E test listings
+    // Remove any previous E2E test listings (seeded codes + create-test brand)
     await prisma.listing.deleteMany({
-      where: { listingCode: { in: Object.values(CODES) } },
+      where: {
+        OR: [
+          { listingCode: { in: Object.values(CODES) } },
+          { brand: 'TestBrand-E2E' },
+        ],
+      },
     })
 
     // Create fresh seed data

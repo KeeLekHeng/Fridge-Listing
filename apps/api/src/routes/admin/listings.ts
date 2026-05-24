@@ -64,7 +64,11 @@ function toDTO(raw: RawListing): AdminListingDTO {
 async function createWithCode(data: Omit<Prisma.ListingCreateInput, 'listingCode'>): Promise<RawListing> {
   for (let attempt = 0; attempt < 10; attempt++) {
     const [row] = await prisma.$queryRaw<[{ max_num: number | null }]>`
-      SELECT MAX(CAST(SUBSTRING("listingCode" FROM 3) AS INTEGER)) AS max_num FROM "Listing"
+      SELECT MAX(
+        CASE WHEN "listingCode" ~ '^F-[0-9]+$'
+        THEN CAST(SUBSTRING("listingCode" FROM 3) AS INTEGER)
+        ELSE NULL END
+      ) AS max_num FROM "Listing"
     `
     const listingCode = `F-${String((row.max_num ?? 0) + 1).padStart(4, '0')}`
     try {
@@ -114,6 +118,13 @@ export async function adminListingRoutes(app: FastifyInstance) {
       limit,
       totalPages: Math.ceil(total / limit),
     })
+  })
+
+  app.get('/listings/:id', async (request, reply) => {
+    const { id } = request.params as { id: string }
+    const listing = await prisma.listing.findUnique({ where: { id }, select: LISTING_SELECT })
+    if (!listing) return reply.status(404).send({ error: 'Not found' })
+    return reply.send(toDTO(listing))
   })
 
   app.post('/listings', async (request, reply) => {

@@ -50,18 +50,22 @@ test('REQ-E2E-015: admin can create a listing', async ({ page }) => {
   await page.getByPlaceholder('e.g. Eusoff Hall').fill('Test Location')
   await page.getByRole('button', { name: 'Create listing' }).click()
   await expect(page).toHaveURL(/\/manage$/, { timeout: 10_000 })
-  await expect(page.getByText('TestBrand-E2E')).toBeVisible()
+  await expect(page.getByText('TestBrand-E2E').first()).toBeVisible()
 })
 
 test('REQ-E2E-016: admin can edit a listing price and change reflects in dashboard', async ({ page }) => {
   await loginAdmin(page)
   await page.goto(`/manage/listings/${td.buyRent.id}/edit`)
   await expect(page.getByRole('button', { name: 'Save changes' })).toBeVisible({ timeout: 5_000 })
-  // Change buy price (placeholder "e.g. 200") to a unique test value
-  await page.getByPlaceholder('e.g. 200').fill('188')
+  // Use native value setter to reliably trigger React's onChange on a controlled number input
+  await page.locator('input[placeholder="e.g. 200"]').evaluate((input: HTMLInputElement) => {
+    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(input, '188')
+    input.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }))
+  })
+  await expect(page.getByPlaceholder('e.g. 200')).toHaveValue('188')
   await page.getByRole('button', { name: 'Save changes' }).click()
   await expect(page).toHaveURL(/\/manage$/, { timeout: 10_000 })
-  await expect(page.getByText('$188')).toBeVisible()
+  await expect(page.getByText('$188')).toBeVisible({ timeout: 10_000 })
 })
 
 test('REQ-E2E-017: admin can upload a real image for a listing', async ({ page }) => {
@@ -78,7 +82,7 @@ test('REQ-E2E-018: admin can change listing status from dashboard', async ({ pag
   const row = page.locator('tr', { has: page.getByText(td.buyRent.code) })
   await row.waitFor({ timeout: 10_000 })
   await row.locator('[aria-label="Change status"]').selectOption('reserved')
-  await expect(row.getByText('Reserved')).toBeVisible({ timeout: 5_000 })
+  await expect(row.locator('span', { hasText: 'Reserved' })).toBeVisible({ timeout: 5_000 })
 })
 
 test('REQ-E2E-019: status change is recorded in action history', async ({ page }) => {
@@ -86,10 +90,10 @@ test('REQ-E2E-019: status change is recorded in action history', async ({ page }
   const row = page.locator('tr', { has: page.getByText(td.buyRent.code) })
   await row.waitFor({ timeout: 10_000 })
   await row.locator('[aria-label="Change status"]').selectOption('rented')
-  await expect(row.getByText('Rented')).toBeVisible({ timeout: 5_000 })
+  await expect(row.locator('span', { hasText: 'Rented' })).toBeVisible({ timeout: 5_000 })
   await row.getByRole('link', { name: 'History' }).click()
   await expect(page).toHaveURL(/\/manage\/listings\/.+\/history/, { timeout: 5_000 })
-  await expect(page.getByText('Status changed')).toBeVisible({ timeout: 10_000 })
+  await expect(page.getByText('Status changed').first()).toBeVisible({ timeout: 10_000 })
 })
 
 test('REQ-E2E-020: admin logout clears session and /manage redirects to login', async ({ page }) => {

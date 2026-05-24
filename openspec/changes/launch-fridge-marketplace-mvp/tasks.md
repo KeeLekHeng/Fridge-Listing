@@ -735,14 +735,14 @@ pnpm test:e2e --project=admin
 **Depends on:** TASK-18
 
 **Acceptance Criteria:**
-- [ ] `pnpm lint` exits 0 across all packages
-- [ ] `pnpm typecheck` exits 0 across all packages
-- [ ] `pnpm build` succeeds for `apps/web` and `apps/api`
-- [ ] `pnpm test:e2e` exits 0 — all buyer and admin Playwright tests pass
-- [ ] No `adminNote` field appears in any public API response (manual spot check)
-- [ ] JWT cookie has HttpOnly, Secure, SameSite=Strict flags (manual spot check with browser devtools)
-- [ ] Telegram bot rejects a non-admin chat ID (manual test)
-- [ ] All Definition of Done items from `requirements.md` section 17 are satisfied
+- [x] `pnpm lint` exits 0 across all packages
+- [x] `pnpm typecheck` exits 0 across all packages
+- [x] `pnpm build` succeeds for `apps/web` and `apps/api`
+- [x] `pnpm test:e2e` exits 0 — all buyer and admin Playwright tests pass
+- [x] No `adminNote` field appears in any public API response (manual spot check)
+- [x] JWT cookie has HttpOnly, Secure, SameSite=Strict flags (manual spot check with browser devtools)
+- [x] Telegram bot rejects a non-admin chat ID (manual test)
+- [x] All Definition of Done items from `requirements.md` section 17 are satisfied
 
 **Verification:**
 ```

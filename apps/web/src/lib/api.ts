@@ -66,7 +66,7 @@ async function get<T>(path: string, params?: Record<string, string | number | bo
       if (v !== undefined) url.searchParams.set(k, String(v))
     }
   }
-  const res = await fetch(url.toString(), { credentials: 'same-origin' })
+  const res = await fetch(url.toString(), { credentials: 'same-origin', cache: 'no-store' })
   if (!res.ok) throw new Error(`API ${res.status}: ${path}`)
   return res.json() as Promise<T>
 }

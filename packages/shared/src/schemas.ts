@@ -43,7 +43,7 @@ export const AdminListingQuerySchema = z.object({
   status: z.enum(LISTING_STATUS).optional(),
   location: z.string().optional(),
   page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().positive().max(50).default(20),
+  limit: z.coerce.number().int().positive().max(1000).default(20),
 })
 
 export const ActionTypeSchema = z.enum(ACTION_TYPE)
