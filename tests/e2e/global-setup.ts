@@ -19,6 +19,21 @@ export interface TestData {
 }
 
 const DATA_FILE = path.resolve(__dirname, '.test-data.json')
+export const FIXTURE_IMAGE = path.resolve(__dirname, 'fixtures/test-image.jpg')
+
+// Minimal 1×1 white JPEG generated via System.Drawing — real file for upload tests
+const FIXTURE_JPEG_B64 =
+  '/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsK' +
+  'CwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQU' +
+  'FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAABAAEDASIA' +
+  'AhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9' +
+  'AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6' +
+  'Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ip' +
+  'qrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEB' +
+  'AQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdh' +
+  'cRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldY' +
+  'WVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPE' +
+  'xcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKAP/2Q=='
 
 export default async function globalSetup() {
   const prisma = new PrismaClient()
@@ -120,6 +135,11 @@ export default async function globalSetup() {
     }
 
     fs.writeFileSync(DATA_FILE, JSON.stringify(testData, null, 2))
+
+    // Write real JPEG fixture for image-upload E2E test
+    fs.mkdirSync(path.dirname(FIXTURE_IMAGE), { recursive: true })
+    fs.writeFileSync(FIXTURE_IMAGE, Buffer.from(FIXTURE_JPEG_B64, 'base64'))
+
     console.log('✓ E2E seed complete')
   } finally {
     await prisma.$disconnect()

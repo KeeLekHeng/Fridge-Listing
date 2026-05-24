@@ -702,15 +702,15 @@ pnpm test:e2e --project=buyer
 **Spec:** `specs/e2e-tests/spec.md`
 
 **Acceptance Criteria:**
-- [ ] REQ-E2E-013: Admin login — passes
-- [ ] REQ-E2E-014: Unauthenticated user redirected from `/manage` — passes
-- [ ] REQ-E2E-015: Admin creates listing — passes
-- [ ] REQ-E2E-016: Admin edits listing price — passes
-- [ ] REQ-E2E-017: Admin uploads image — passes
-- [ ] REQ-E2E-018: Admin changes status — passes
-- [ ] REQ-E2E-019: Admin views action history — passes
-- [ ] REQ-E2E-020: Admin logout — passes
-- [ ] `pnpm test:e2e` exits 0
+- [x] REQ-E2E-013: Admin login — passes
+- [x] REQ-E2E-014: Unauthenticated user redirected from `/manage` — passes
+- [x] REQ-E2E-015: Admin creates listing — passes
+- [x] REQ-E2E-016: Admin edits listing price — passes
+- [x] REQ-E2E-017: Admin uploads image — passes
+- [x] REQ-E2E-018: Admin changes status — passes
+- [x] REQ-E2E-019: Admin views action history — passes
+- [x] REQ-E2E-020: Admin logout — passes
+- [x] `pnpm test:e2e` exits 0
 
 **Verification:**
 ```
