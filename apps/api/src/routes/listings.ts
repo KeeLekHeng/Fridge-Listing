@@ -61,7 +61,10 @@ function toDTO(raw: RawListing): PublicListingDTO {
 export async function listingRoutes(app: FastifyInstance) {
   app.get('/listings', async (request, reply) => {
     const parsed = ListingQuerySchema.safeParse(request.query)
-    if (!parsed.success) return reply.status(400).send({ error: parsed.error.flatten() })
+    if (!parsed.success) {
+      request.log.warn({ errors: parsed.error.flatten() }, 'Validation error')
+      return reply.status(400).send({ error: 'Invalid request' })
+    }
 
     const { buyEnabled, rentEnabled, location, page, limit } = parsed.data
     const where: Prisma.ListingWhereInput = {

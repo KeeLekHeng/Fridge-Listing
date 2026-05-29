@@ -86,7 +86,10 @@ export async function adminListingRoutes(app: FastifyInstance) {
 
   app.get('/listings', async (request, reply) => {
     const parsed = AdminListingQuerySchema.safeParse(request.query)
-    if (!parsed.success) return reply.status(400).send({ error: parsed.error.flatten() })
+    if (!parsed.success) {
+      request.log.warn({ errors: parsed.error.flatten() }, 'Validation error')
+      return reply.status(400).send({ error: 'Invalid request' })
+    }
 
     const { search, status, location, page, limit } = parsed.data
     const where: Prisma.ListingWhereInput = {
@@ -129,7 +132,10 @@ export async function adminListingRoutes(app: FastifyInstance) {
 
   app.post('/listings', async (request, reply) => {
     const parsed = CreateListingSchema.safeParse(request.body)
-    if (!parsed.success) return reply.status(400).send({ error: parsed.error.flatten() })
+    if (!parsed.success) {
+      request.log.warn({ errors: parsed.error.flatten() }, 'Validation error')
+      return reply.status(400).send({ error: 'Invalid request' })
+    }
 
     const { adminNote, buyPrice, ...rest } = parsed.data
     const listing = await createWithCode({
@@ -148,7 +154,10 @@ export async function adminListingRoutes(app: FastifyInstance) {
       return reply.status(400).send({ error: 'Request body must be a JSON object' })
     }
     const parsed = UpdateListingSchema.safeParse(rawBody)
-    if (!parsed.success) return reply.status(400).send({ error: parsed.error.flatten() })
+    if (!parsed.success) {
+      request.log.warn({ errors: parsed.error.flatten() }, 'Validation error')
+      return reply.status(400).send({ error: 'Invalid request' })
+    }
 
     const existing = await prisma.listing.findUnique({ where: { id }, select: { id: true } })
     if (!existing) return reply.status(404).send({ error: 'Not found' })

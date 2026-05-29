@@ -1,6 +1,9 @@
 import Fastify from 'fastify'
 import cookie from '@fastify/cookie'
 import multipart from '@fastify/multipart'
+import cors from '@fastify/cors'
+import helmet from '@fastify/helmet'
+import rateLimit from '@fastify/rate-limit'
 import { authRoutes } from './routes/admin/auth'
 import { adminListingRoutes } from './routes/admin/listings'
 import { imageRoutes } from './routes/admin/images'
@@ -10,6 +13,12 @@ import { listingRoutes } from './routes/listings'
 
 const app = Fastify({ logger: true })
 
+app.register(helmet)
+app.register(cors, {
+  origin: process.env.FRONTEND_URL ?? false,
+  credentials: true,
+})
+app.register(rateLimit, { global: false })
 app.register(cookie)
 app.register(multipart, { limits: { files: 3, fileSize: 2 * 1024 * 1024 } })
 

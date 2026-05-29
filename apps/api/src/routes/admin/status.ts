@@ -10,7 +10,10 @@ export async function statusRoutes(app: FastifyInstance) {
   app.patch('/listings/:id/status', async (request, reply) => {
     const { id } = request.params as { id: string }
     const parsed = StatusUpdateSchema.safeParse(request.body)
-    if (!parsed.success) return reply.status(400).send({ error: parsed.error.flatten() })
+    if (!parsed.success) {
+      request.log.warn({ errors: parsed.error.flatten() }, 'Validation error')
+      return reply.status(400).send({ error: 'Invalid request' })
+    }
 
     const { status } = parsed.data
 
@@ -27,7 +30,10 @@ export async function statusRoutes(app: FastifyInstance) {
 
   app.get('/action-history', async (request, reply) => {
     const parsed = ActionHistoryQuerySchema.safeParse(request.query)
-    if (!parsed.success) return reply.status(400).send({ error: parsed.error.flatten() })
+    if (!parsed.success) {
+      request.log.warn({ errors: parsed.error.flatten() }, 'Validation error')
+      return reply.status(400).send({ error: 'Invalid request' })
+    }
 
     const { listingId, page, limit } = parsed.data
     const where = listingId ? { listingId } : {}

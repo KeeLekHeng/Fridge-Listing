@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify'
+import { timingSafeEqual } from 'crypto'
 import { findListingByCode, changeListingStatus, changeListingPrices, changeListingNote } from '../../services/listing'
 
 const ADMIN_CHAT_IDS: Set<number> = new Set(
@@ -114,7 +115,10 @@ async function handleMessage(chatId: number, text: string) {
 export async function telegramWebhookRoutes(app: FastifyInstance) {
   app.post('/telegram/webhook', async (request, reply) => {
     const secret = (request.headers['x-telegram-bot-api-secret-token'] as string | undefined) ?? ''
-    if (secret !== process.env.TELEGRAM_WEBHOOK_SECRET) {
+    const expected = Buffer.from(process.env.TELEGRAM_WEBHOOK_SECRET ?? '')
+    const actual = Buffer.from(secret)
+    const valid = expected.length > 0 && expected.length === actual.length && timingSafeEqual(expected, actual)
+    if (!valid) {
       return reply.status(403).send()
     }
 
