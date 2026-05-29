@@ -43,7 +43,7 @@ test('REQ-E2E-014: unauthenticated access to /manage redirects to login', async 
 
 test('REQ-E2E-015: admin can create a listing', async ({ page }) => {
   await loginAdmin(page)
-  await page.getByRole('link', { name: '+ Create listing' }).click()
+  await page.getByRole('link', { name: '+ New listing' }).click()
   await expect(page).toHaveURL(/\/manage\/listings\/new/, { timeout: 5_000 })
   await page.getByPlaceholder('e.g. Panasonic').fill('TestBrand-E2E')
   await page.getByPlaceholder('e.g. Like new').fill('Good')
@@ -93,12 +93,12 @@ test('REQ-E2E-019: status change is recorded in action history', async ({ page }
   await expect(row.locator('span', { hasText: 'Rented' })).toBeVisible({ timeout: 5_000 })
   await row.getByRole('link', { name: 'History' }).click()
   await expect(page).toHaveURL(/\/manage\/listings\/.+\/history/, { timeout: 5_000 })
-  await expect(page.getByText('Status changed').first()).toBeVisible({ timeout: 10_000 })
+  await expect(page.getByText('changed the status').first()).toBeVisible({ timeout: 10_000 })
 })
 
 test('REQ-E2E-020: admin logout clears session and /manage redirects to login', async ({ page }) => {
   await loginAdmin(page)
-  await page.getByRole('button', { name: 'Logout' }).click()
+  await page.getByRole('button', { name: 'Sign out' }).click()
   await expect(page).toHaveURL(/\/manage\/login/, { timeout: 5_000 })
   // Confirm the cookie is cleared: /manage must redirect again without prompting login
   await page.goto('/manage')

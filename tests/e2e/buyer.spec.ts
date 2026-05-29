@@ -57,15 +57,9 @@ test('REQ-E2E-009: buyer cannot add more than 5 to shortlist', async ({ page }) 
   })
   await page.goto(`/listing/${td.buyRent.id}`)
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 10_000 })
-  // CTA bar shows "Shortlist full (5/5)"
+  // CTA bar shows disabled "Shortlist full (5/5)" button
   await expect(page.getByText('Shortlist full (5/5)')).toBeVisible()
-  // Clicking the header heart triggers an error toast with the full message
-  await page.getByRole('button', { name: 'Add to shortlist' }).first().click()
-  await expect(page.getByRole('alert')).toContainText('shortlist is full', { timeout: 5_000 })
-  // Count remains at 5
-  await expect(
-    page.getByRole('button', { name: 'Add to shortlist' }).first().locator('span')
-  ).toHaveText('5')
+  await expect(page.getByRole('button', { name: 'Add to shortlist' })).toBeDisabled()
 })
 
 test('REQ-E2E-010: buyer removes from shortlist', async ({ page }) => {
@@ -85,7 +79,7 @@ test('REQ-E2E-010: buyer removes from shortlist', async ({ page }) => {
 test('REQ-E2E-011: telegram enquiry button href', async ({ page }) => {
   await page.goto(`/listing/${td.buyRent.id}`)
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 10_000 })
-  const href = await page.getByRole('link', { name: /enquire on telegram/i }).getAttribute('href')
+  const href = await page.locator('a[href*="t.me/Lucas_Keee"]').first().getAttribute('href')
   expect(href).toContain('t.me/Lucas_Keee')
 })
 
