@@ -12,26 +12,42 @@ import {
 } from '../components/icons'
 import { TopBar } from '../components/TopBar'
 
-function buildTelegramUrl(listing: PublicListingDTO): string {
+function tgUrl(text: string): string {
+  return `https://t.me/Lucas_Keee?text=${encodeURIComponent(text)}`
+}
+
+function buildBuyTelegramUrl(listing: PublicListingDTO): string {
   const pageUrl = `${window.location.origin}/listing/${listing.id}`
-  const lines: string[] = [
-    `Hi! I'd like to enquire about this fridge:`,
+  const lines = [
+    `Hi! I'm looking to buy this fridge:`,
     ``,
     `• Code: ${listing.listingCode}`,
     `• ${listing.brand} — ${listing.capacityLitres}L · ${listing.condition}`,
     `• Location: ${listing.location}`,
+    `• Price: $${listing.buyPrice}`,
+    ``,
+    pageUrl,
+    ``,
+    `Is it still available? When can I arrange a viewing / collection?`,
   ]
-  if (listing.buyEnabled && listing.buyPrice != null) {
-    lines.push(`• Buy: $${listing.buyPrice}`)
-  }
-  if (listing.rentEnabled && listing.rentPrice != null && listing.depositPrice != null) {
-    lines.push(`• Rent: $${listing.rentPrice}/sem + $${listing.depositPrice} deposit`)
-  }
+  return tgUrl(lines.join('\n'))
+}
+
+function buildRentTelegramUrl(listing: PublicListingDTO): string {
+  const pageUrl = `${window.location.origin}/listing/${listing.id}`
+  const lines = [
+    `Hi! I'm looking to rent this fridge:`,
+    ``,
+    `• Code: ${listing.listingCode}`,
+    `• ${listing.brand} — ${listing.capacityLitres}L · ${listing.condition}`,
+    `• Location: ${listing.location}`,
+    `• Rent: $${listing.rentPrice}/sem + $${listing.depositPrice} deposit`,
+  ]
   if (listing.deliveryAvailable && listing.deliveryPrice != null) {
-    lines.push(`• Delivery available: +$${listing.deliveryPrice}`)
+    lines.push(`• Delivery: +$${listing.deliveryPrice} (or self-pickup)`)
   }
-  lines.push(``, pageUrl, ``, `Is it still available?`)
-  return `https://t.me/Lucas_Keee?text=${encodeURIComponent(lines.join('\n'))}`
+  lines.push(``, pageUrl, ``, `Is it still available? When can I arrange collection?`)
+  return tgUrl(lines.join('\n'))
 }
 
 export function ListingDetailPage() {
@@ -96,7 +112,8 @@ export function ListingDetailPage() {
   if (notFound || !listing) return <NotFound onBack={() => navigate(-1)} />
 
   const isShortlisted = shortlist.has(listing.id)
-  const telegramUrl = buildTelegramUrl(listing)
+  const buyTelegramUrl = listing.buyEnabled && listing.buyPrice != null ? buildBuyTelegramUrl(listing) : null
+  const rentTelegramUrl = listing.rentEnabled ? buildRentTelegramUrl(listing) : null
 
   return (
     <div className="min-h-screen bg-white">
@@ -200,15 +217,30 @@ export function ListingDetailPage() {
         className="fixed bottom-0 left-0 right-0 bg-white border-t border-line z-30 px-5 pt-3.5"
         style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }}
       >
-        <a
-          href={telegramUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full py-3.5 rounded-btn bg-[#229ED9] text-white text-[15px] font-semibold active:opacity-90 transition-opacity"
-        >
-          <IconTelegram size={16} color="#fff" />
-          Enquire on Telegram
-        </a>
+        <div className="flex gap-2">
+          {buyTelegramUrl && (
+            <a
+              href={buyTelegramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-1 items-center justify-center gap-2 py-3.5 rounded-btn bg-[#229ED9] text-white text-[15px] font-semibold active:opacity-90 transition-opacity"
+            >
+              <IconTelegram size={16} color="#fff" />
+              {rentTelegramUrl ? 'Buy' : 'Enquire to buy'}
+            </a>
+          )}
+          {rentTelegramUrl && (
+            <a
+              href={rentTelegramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-1 items-center justify-center gap-2 py-3.5 rounded-btn bg-[#229ED9] text-white text-[15px] font-semibold active:opacity-90 transition-opacity"
+            >
+              <IconTelegram size={16} color="#fff" />
+              {buyTelegramUrl ? 'Rent' : 'Enquire to rent'}
+            </a>
+          )}
+        </div>
         <button
           onClick={handleShortlist}
           disabled={shortlist.isFull && !isShortlisted}
