@@ -5,7 +5,7 @@ export const CreateListingSchema = z.object({
   category: z.string().min(1).default('fridge'),
   brand: z.string().min(1),
   condition: z.string().min(1),
-  location: z.string().min(1),
+  location: z.string().min(1).transform(v => v.trim()),
   capacityLitres: z.number().int().positive().default(50),
   buyEnabled: z.boolean().default(false),
   buyPrice: z.number().positive().nullable().default(null),
