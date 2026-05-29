@@ -24,7 +24,7 @@ export function ListingCard({ listing, mode, isShortlisted, onToggleShortlist }:
       {/* Image area */}
       <div className="relative w-full aspect-[4/3] rounded-card overflow-hidden bg-surface">
         {coverImage ? (
-          <img src={coverImage} alt={listing.brand} className="w-full h-full object-cover" />
+          <img src={coverImage} alt={listing.brand} className="w-full h-full object-contain" />
         ) : (
           <FridgePlaceholder label={listing.listingCode} />
         )}

@@ -32,7 +32,7 @@ export function ImageGallery({ images, brand, listingCode }: Props) {
       <div ref={trackRef} className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory">
         {sorted.length > 0 ? sorted.map(img => (
           <div key={img.id} className="flex-none w-full aspect-[4/3] snap-start">
-            <img src={img.imageUrl} alt={brand} className="w-full h-full object-cover" />
+            <img src={img.imageUrl} alt={brand} className="w-full h-full object-contain" />
           </div>
         )) : (
           <div className="flex-none w-full aspect-[4/3] snap-start">
