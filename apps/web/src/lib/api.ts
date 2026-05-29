@@ -158,7 +158,7 @@ export const api = {
     },
 
     history: {
-      list: (listingId: string, page = 1) =>
+      list: (listingId?: string, page = 1) =>
         get<ActionHistoryResponse>(`${BASE}/admin/action-history`, { listingId, page, limit: 20 }),
     },
   },

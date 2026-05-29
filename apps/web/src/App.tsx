@@ -7,6 +7,7 @@ import { AdminDashboardPage } from './pages/AdminDashboardPage'
 import { AdminListingFormPage } from './pages/AdminListingFormPage'
 import { AdminHistoryPage } from './pages/AdminHistoryPage'
 import { RequireAuth } from './components/RequireAuth'
+import { AdminLayout } from './components/AdminLayout'
 
 
 export default function App() {
@@ -23,10 +24,13 @@ export default function App() {
 
         {/* Admin — protected (auth-gated) */}
         <Route element={<RequireAuth />}>
-          <Route path="/manage" element={<AdminDashboardPage />} />
-          <Route path="/manage/listings/new" element={<AdminListingFormPage />} />
-          <Route path="/manage/listings/:id/edit" element={<AdminListingFormPage />} />
-          <Route path="/manage/listings/:id/history" element={<AdminHistoryPage />} />
+          <Route element={<AdminLayout />}>
+            <Route path="/manage" element={<AdminDashboardPage />} />
+            <Route path="/manage/listings/new" element={<AdminListingFormPage />} />
+            <Route path="/manage/listings/:id/edit" element={<AdminListingFormPage />} />
+            <Route path="/manage/listings/:id/history" element={<AdminHistoryPage />} />
+            <Route path="/manage/activities" element={<AdminHistoryPage />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
