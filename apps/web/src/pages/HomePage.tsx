@@ -135,9 +135,6 @@ export function HomePage() {
           <h1 className="text-[34px] font-semibold tracking-[-0.035em] leading-[1.05] text-ink text-balance">
             Find a <em className="font-serif font-normal italic not-italic" style={{ fontFamily: '"Instrument Serif", Georgia, serif', fontStyle: 'italic' }}>fridge</em> for your room
           </h1>
-          <div className="mt-1.5 text-[15px] text-ink-3 tracking-[-0.005em]" style={{ fontFeatureSettings: "'tnum'" }}>
-            Buy from <span className="text-ink font-medium">$60</span> · Rent from <span className="text-ink font-medium">$70/sem</span>
-          </div>
         </div>
 
         <FilterBar
