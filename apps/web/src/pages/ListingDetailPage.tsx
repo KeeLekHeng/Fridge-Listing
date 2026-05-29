@@ -8,8 +8,9 @@ import { Badge } from '../components/Badge'
 import { ImageGallery } from '../components/ImageGallery'
 import { FridgePlaceholder } from '../components/FridgePlaceholder'
 import {
-  IconPin, IconTruck, IconInfo, IconHeart, IconCheck, IconChevron, IconTelegram,
+  IconPin, IconTruck, IconInfo, IconCheck, IconChevron, IconTelegram,
 } from '../components/icons'
+import { TopBar } from '../components/TopBar'
 
 function buildTelegramUrl(listing: PublicListingDTO): string {
   const pageUrl = `${window.location.origin}/listing/${listing.id}`
@@ -109,42 +110,7 @@ export function ListingDetailPage() {
       )}
 
       <div ref={scrollRef} className="h-screen overflow-y-auto overflow-x-hidden no-scrollbar">
-        {/* Detail header */}
-        <div className={clsx(
-          'sticky top-0 z-30 bg-white flex items-center justify-between px-4 h-14 transition-shadow duration-200',
-          scrolled && 'shadow-sticky',
-        )}>
-          <button
-            onClick={() => navigate(-1)}
-            aria-label="Back"
-            className="w-10 h-10 flex items-center justify-center rounded-full -ml-1 hover:bg-surface transition-colors"
-          >
-            <IconChevron direction="left" size={18} color="#0F1014" />
-          </button>
-
-          <div className={clsx(
-            'flex-1 mx-2 text-center text-[16px] font-semibold tracking-[-0.015em] text-ink truncate transition-opacity duration-200',
-            scrolled ? 'opacity-100' : 'opacity-0',
-          )}>
-            {listing.brand}
-          </div>
-
-          <button
-            onClick={handleShortlist}
-            aria-label={isShortlisted ? 'Remove from shortlist' : 'Add to shortlist'}
-            className={clsx(
-              'relative w-10 h-10 flex items-center justify-center rounded-full -mr-1 transition-colors',
-              isShortlisted ? 'bg-ink' : 'hover:bg-surface',
-            )}
-          >
-            <IconHeart size={18} filled={isShortlisted} />
-            {shortlist.count > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-0.5 rounded-full bg-accent text-white text-[9px] font-bold flex items-center justify-center leading-none">
-                {shortlist.count}
-              </span>
-            )}
-          </button>
-        </div>
+        <TopBar shortlistCount={shortlist.count} scrolled={scrolled} />
 
         {/* Gallery */}
         <ImageGallery

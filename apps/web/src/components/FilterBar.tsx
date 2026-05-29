@@ -8,17 +8,21 @@ export type PriceMode = 'buy' | 'rent'
 interface Props {
   mode: PriceMode
   onModeChange: (m: PriceMode) => void
-  selectedLocation: string | undefined
-  onLocationChange: (loc: string | undefined) => void
+  selectedLocations: string[]
+  onLocationsChange: (locs: string[]) => void
   locations: string[]
   scrolled?: boolean
 }
 
-export function FilterBar({ mode, onModeChange, selectedLocation, onLocationChange, locations, scrolled = false }: Props) {
+export function FilterBar({ mode, onModeChange, selectedLocations, onLocationsChange, locations, scrolled = false }: Props) {
   const [sheetOpen, setSheetOpen] = useState(false)
 
-  const chipLabel = selectedLocation ?? 'Location'
-  const chipActive = !!selectedLocation
+  const chipActive = selectedLocations.length > 0
+  const chipLabel = selectedLocations.length === 0
+    ? 'Location'
+    : selectedLocations.length === 1
+      ? selectedLocations[0]
+      : `${selectedLocations.length} locations`
 
   return (
     <>
@@ -74,13 +78,15 @@ export function FilterBar({ mode, onModeChange, selectedLocation, onLocationChan
 
         <div className="flex flex-col">
           {locations.map(loc => {
-            const selected = selectedLocation === loc
+            const selected = selectedLocations.includes(loc)
             return (
               <button
                 key={loc}
                 onClick={() => {
-                  onLocationChange(selected ? undefined : loc)
-                  setSheetOpen(false)
+                  const next = selected
+                    ? selectedLocations.filter(l => l !== loc)
+                    : [...selectedLocations, loc]
+                  onLocationsChange(next)
                 }}
                 className="flex items-center justify-between py-3.5 border-b border-line text-left text-[16px] last:border-b-0"
                 style={{ fontWeight: selected ? 600 : 400 }}
@@ -112,7 +118,7 @@ export function FilterBar({ mode, onModeChange, selectedLocation, onLocationChan
 
         <div className="flex gap-2 mt-4">
           <button
-            onClick={() => { onLocationChange(undefined); setSheetOpen(false) }}
+            onClick={() => { onLocationsChange([]); setSheetOpen(false) }}
             className="flex-none px-5 py-3.5 rounded-btn bg-surface text-ink text-[15px] font-semibold"
           >
             Clear

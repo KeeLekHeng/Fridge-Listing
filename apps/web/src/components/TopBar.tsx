@@ -15,24 +15,24 @@ export function TopBar({ shortlistCount, scrolled = false }: Props) {
         scrolled && 'shadow-sticky',
       )}
     >
-      {/* Logo */}
-      <div className="flex items-center gap-2">
+      {/* Logo — links to home */}
+      <Link to="/" className="flex items-center gap-2">
         <LogoMark />
         <span className="font-semibold text-[22px] tracking-[-0.04em] leading-none">
           Chillix<span className="text-accent">.</span>
         </span>
-      </div>
+      </Link>
 
       {/* Shortlist icon */}
       <Link
         to="/shortlist"
-        aria-label={`Shortlist (${shortlistCount} items)`}
+        aria-label={`Shortlist (${shortlistCount} of 5)`}
         className="relative w-10 h-10 rounded-pill bg-surface flex items-center justify-center hover:bg-surface-2 transition-colors"
       >
         <IconHeart size={18} />
         {shortlistCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-pill bg-ink text-white text-[11px] font-semibold flex items-center justify-center border-2 border-white leading-none">
-            {shortlistCount}
+          <span className="absolute -top-0.5 -right-0.5 min-w-[22px] h-[18px] px-1 rounded-pill bg-ink text-white text-[11px] font-semibold flex items-center justify-center border-2 border-white leading-none">
+            {shortlistCount}/5
           </span>
         )}
       </Link>

@@ -13,7 +13,7 @@ export interface ListingsResponse {
 export interface ListingsParams {
   buyEnabled?: boolean
   rentEnabled?: boolean
-  location?: string
+  locations?: string[]
   page?: number
   limit?: number
 }
@@ -119,7 +119,7 @@ export const api = {
       get<ListingsResponse>(`${BASE}/listings`, {
         buyEnabled: params.buyEnabled,
         rentEnabled: params.rentEnabled,
-        location: params.location,
+        location: params.locations && params.locations.length > 0 ? params.locations.join(',') : undefined,
         page: params.page ?? 1,
         limit: params.limit ?? 6,
       }),

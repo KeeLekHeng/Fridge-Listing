@@ -33,7 +33,7 @@ export const ActionHistoryQuerySchema = z.object({
 export const ListingQuerySchema = z.object({
   buyEnabled: z.enum(['true', 'false']).transform((v) => v === 'true').optional(),
   rentEnabled: z.enum(['true', 'false']).transform((v) => v === 'true').optional(),
-  location: z.string().optional(),
+  location: z.string().transform(v => v.split(',').filter(Boolean)).optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(50).default(6),
 })

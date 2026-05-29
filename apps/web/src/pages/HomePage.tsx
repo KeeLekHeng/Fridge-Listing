@@ -15,7 +15,7 @@ export function HomePage() {
   // Derive filter state from URL
   const rawMode = searchParams.get('mode')
   const mode: PriceMode = rawMode === 'rent' ? 'rent' : 'buy'
-  const location = searchParams.get('location') ?? undefined
+  const locations = searchParams.getAll('location')
   const rawPage = parseInt(searchParams.get('page') ?? '1', 10)
   const page = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage
 
@@ -25,7 +25,7 @@ export function HomePage() {
   const [error, setError] = useState<string | null>(null)
 
   // All known locations (derived from an unfiltered fetch on mount)
-  const [locations, setLocations] = useState<string[]>([])
+  const [allLocations, setAllLocations] = useState<string[]>([])
 
   const shortlist = useShortlist()
   const [shortlistError, setShortlistError] = useState<string | null>(null)
@@ -49,7 +49,7 @@ export function HomePage() {
   useEffect(() => {
     api.listings.list({ page: 1, limit: 50 }).then(res => {
       const unique = [...new Set(res.data.map(l => l.location))].sort()
-      setLocations(unique)
+      setAllLocations(unique)
     }).catch(() => {/* silently ignore — locations just won't show in filter */})
   }, [])
 
@@ -62,13 +62,14 @@ export function HomePage() {
       limit: 6,
       ...(mode === 'buy' && { buyEnabled: true }),
       ...(mode === 'rent' && { rentEnabled: true }),
-      ...(location && { location }),
+      ...(locations.length > 0 && { locations }),
     }
     api.listings.list(params)
       .then(setResult)
       .catch(() => setError('Failed to load listings. Please try again.'))
       .finally(() => setLoading(false))
-  }, [mode, location, page])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, locations.join(','), page])
 
   const setParam = useCallback((key: string, value: string | undefined) => {
     setSearchParams(prev => {
@@ -85,7 +86,15 @@ export function HomePage() {
   }, [setSearchParams])
 
   const handleModeChange = (m: PriceMode) => setParam('mode', m)
-  const handleLocationChange = (loc: string | undefined) => setParam('location', loc)
+  const handleLocationsChange = (locs: string[]) => {
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev)
+      next.delete('location')
+      locs.forEach(l => next.append('location', l))
+      next.delete('page')
+      return next
+    }, { replace: true })
+  }
   const handlePage = (p: number) => {
     setSearchParams(prev => {
       const next = new URLSearchParams(prev)
@@ -134,9 +143,9 @@ export function HomePage() {
         <FilterBar
           mode={mode}
           onModeChange={handleModeChange}
-          selectedLocation={location}
-          onLocationChange={handleLocationChange}
-          locations={locations}
+          selectedLocations={locations}
+          onLocationsChange={handleLocationsChange}
+          locations={allLocations}
           scrolled={scrolled}
         />
 

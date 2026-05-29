@@ -68,7 +68,7 @@ export async function listingRoutes(app: FastifyInstance) {
       status: 'available',
       ...(buyEnabled !== undefined && { buyEnabled }),
       ...(rentEnabled !== undefined && { rentEnabled }),
-      ...(location !== undefined && { location }),
+      ...(location && location.length > 0 && { location: { in: location } }),
     }
 
     const [total, rows] = await Promise.all([
