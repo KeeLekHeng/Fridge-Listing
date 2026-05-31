@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint . && echo ✓ No lint errors",
     "typecheck": "pnpm -r typecheck && echo ✓ No type errors",
-    "build": "pnpm --filter @fridge/api build && pnpm --filter @fridge/web build",
+    "build": "pnpm --filter @fridge/shared build && pnpm --filter @fridge/api build && pnpm --filter @fridge/web build",
     "test:e2e": "playwright test",
     "generate": "prisma generate",
     "postinstall": "prisma generate"
