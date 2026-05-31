@@ -11,13 +11,15 @@ import {
   IconPin, IconTruck, IconInfo, IconCheck, IconChevron, IconTelegram,
 } from '../components/icons'
 import { TopBar } from '../components/TopBar'
+import { BottomSheet } from '../components/ui/BottomSheet'
 
 function tgUrl(text: string): string {
   return `https://t.me/Lucas_Keee?text=${encodeURIComponent(text)}`
 }
 
-function buildBuyTelegramUrl(listing: PublicListingDTO): string {
+function buildBuyTelegramUrl(listing: PublicListingDTO, delivery: boolean): string {
   const pageUrl = `${window.location.origin}/listing/${listing.id}`
+  const deliveryPrice = listing.deliveryPrice ?? 15
   const lines = [
     `Hi! I'm looking to buy this fridge:`,
     ``,
@@ -25,16 +27,20 @@ function buildBuyTelegramUrl(listing: PublicListingDTO): string {
     `• ${listing.brand} — ${listing.capacityLitres}L · ${listing.condition}`,
     `• Location: ${listing.location}`,
     `• Price: $${listing.buyPrice}`,
+    `• Delivery/Self-Collect: ${delivery ? `Delivery (+$${deliveryPrice})` : 'Self-collect'}`,
     ``,
     pageUrl,
     ``,
-    `Is it still available? When can I arrange a viewing / collection?`,
+    delivery
+      ? `Is it still available? When can I arrange delivery?`
+      : `Is it still available? When can I arrange a viewing / collection?`,
   ]
   return tgUrl(lines.join('\n'))
 }
 
-function buildRentTelegramUrl(listing: PublicListingDTO): string {
+function buildRentTelegramUrl(listing: PublicListingDTO, delivery: boolean): string {
   const pageUrl = `${window.location.origin}/listing/${listing.id}`
+  const deliveryPrice = listing.deliveryPrice ?? 15
   const lines = [
     `Hi! I'm looking to rent this fridge:`,
     ``,
@@ -42,11 +48,14 @@ function buildRentTelegramUrl(listing: PublicListingDTO): string {
     `• ${listing.brand} — ${listing.capacityLitres}L · ${listing.condition}`,
     `• Location: ${listing.location}`,
     `• Rent: $${listing.rentPrice}/sem + $${listing.depositPrice} deposit`,
+    `• Delivery/Self-Collect: ${delivery ? `Delivery (+$${deliveryPrice})` : 'Self-collect'}`,
   ]
-  if (listing.deliveryAvailable && listing.deliveryPrice != null) {
-    lines.push(`• Delivery: +$${listing.deliveryPrice} (or self-pickup)`)
-  }
-  lines.push(``, pageUrl, ``, `Is it still available? When can I arrange collection?`)
+  lines.push(
+    ``, pageUrl, ``,
+    delivery
+      ? `Is it still available? When can I arrange delivery?`
+      : `Is it still available? When can I arrange collection?`,
+  )
   return tgUrl(lines.join('\n'))
 }
 
@@ -63,6 +72,11 @@ export function ListingDetailPage() {
 
   const shortlist = useShortlist()
   const [shortlistError, setShortlistError] = useState<string | null>(null)
+  const [deliverySheet, setDeliverySheet] = useState<{ open: boolean; type: 'buy' | 'rent' } | null>(null)
+
+  const openDeliverySheet = useCallback((type: 'buy' | 'rent') => {
+    setDeliverySheet({ open: true, type })
+  }, [])
 
   useEffect(() => {
     if (!shortlistError) return
@@ -112,8 +126,8 @@ export function ListingDetailPage() {
   if (notFound || !listing) return <NotFound onBack={() => navigate(-1)} />
 
   const isShortlisted = shortlist.has(listing.id)
-  const buyTelegramUrl = listing.buyEnabled && listing.buyPrice != null ? buildBuyTelegramUrl(listing) : null
-  const rentTelegramUrl = listing.rentEnabled ? buildRentTelegramUrl(listing) : null
+  const hasBuy = listing.buyEnabled && listing.buyPrice != null
+  const hasRent = listing.rentEnabled
 
   return (
     <div className="min-h-screen bg-white">
@@ -176,8 +190,7 @@ export function ListingDetailPage() {
             <div className="flex items-start gap-2.5 mt-3 p-3 rounded-[10px] bg-surface text-[13px] text-ink-3 leading-snug">
               <IconInfo size={14} color="#6B7280" />
               <span>
-                Returning the fridge in working condition is your responsibility.
-                We can collect it for you for an additional fee — ask on Telegram.
+                Returning the fridge in working condition is your responsibility (to get back the deposit).
               </span>
             </div>
           </PriceSection>
@@ -218,27 +231,23 @@ export function ListingDetailPage() {
         style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }}
       >
         <div className="flex gap-2">
-          {buyTelegramUrl && (
-            <a
-              href={buyTelegramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+          {hasBuy && (
+            <button
+              onClick={() => openDeliverySheet('buy')}
               className="flex flex-1 items-center justify-center gap-2 py-3.5 rounded-btn bg-[#229ED9] text-white text-[15px] font-semibold active:opacity-90 transition-opacity"
             >
               <IconTelegram size={16} color="#fff" />
-              {rentTelegramUrl ? 'Buy' : 'Enquire to buy'}
-            </a>
+              {hasRent ? 'Buy' : 'Enquire to buy'}
+            </button>
           )}
-          {rentTelegramUrl && (
-            <a
-              href={rentTelegramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+          {hasRent && (
+            <button
+              onClick={() => openDeliverySheet('rent')}
               className="flex flex-1 items-center justify-center gap-2 py-3.5 rounded-btn bg-[#229ED9] text-white text-[15px] font-semibold active:opacity-90 transition-opacity"
             >
               <IconTelegram size={16} color="#fff" />
-              {buyTelegramUrl ? 'Rent' : 'Enquire to rent'}
-            </a>
+              {hasBuy ? 'Rent' : 'Enquire to rent'}
+            </button>
           )}
         </div>
         <button
@@ -263,7 +272,67 @@ export function ListingDetailPage() {
           )}
         </button>
       </div>
+
+      {/* Delivery preference sheet */}
+      {deliverySheet && (
+        <DeliverySheet
+          open={deliverySheet.open}
+          listing={listing}
+          type={deliverySheet.type}
+          onClose={() => setDeliverySheet(null)}
+        />
+      )}
     </div>
+  )
+}
+
+function DeliverySheet({
+  open, listing, type, onClose,
+}: {
+  open: boolean
+  listing: PublicListingDTO
+  type: 'buy' | 'rent'
+  onClose: () => void
+}) {
+  const deliveryPrice = listing.deliveryPrice ?? 15
+  const deliveryUrl = type === 'buy'
+    ? buildBuyTelegramUrl(listing, true)
+    : buildRentTelegramUrl(listing, true)
+  const selfCollectUrl = type === 'buy'
+    ? buildBuyTelegramUrl(listing, false)
+    : buildRentTelegramUrl(listing, false)
+
+  return (
+    <BottomSheet open={open} onClose={onClose} title="How would you like it?">
+      <div className="flex flex-col gap-3 mt-4 pb-4">
+        <a
+          href={deliveryUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={onClose}
+          className="flex items-center justify-between p-4 rounded-[14px] border-2 border-[#229ED9] bg-[#229ED9]/5 active:opacity-80 transition-opacity"
+        >
+          <div>
+            <div className="text-[16px] font-semibold text-ink">Delivery</div>
+            <div className="text-[13px] text-ink-3 mt-0.5">+${deliveryPrice} across campus</div>
+          </div>
+          <IconTruck size={22} color="#229ED9" />
+        </a>
+        <a
+          href={selfCollectUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={onClose}
+          className="flex items-center justify-between p-4 rounded-[14px] border-2 border-line bg-surface active:opacity-80 transition-opacity"
+        >
+          <div>
+            <div className="text-[16px] font-semibold text-ink">Self-collect</div>
+            <div className="text-[13px] text-ink-3 mt-0.5">Free — we'll send the address on Telegram</div>
+          </div>
+          <IconPin size={20} color="#6B7280" />
+        </a>
+      </div>
+    </BottomSheet>
   )
 }
 

@@ -76,11 +76,27 @@ test('REQ-E2E-010: buyer removes from shortlist', async ({ page }) => {
   await expect(page.getByText('Your shortlist is empty')).toBeVisible({ timeout: 5_000 })
 })
 
-test('REQ-E2E-011: telegram enquiry button href', async ({ page }) => {
+test('REQ-E2E-011: enquiry button opens delivery dialog with correct telegram links', async ({ page }) => {
   await page.goto(`/listing/${td.buyRent.id}`)
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 10_000 })
-  const href = await page.locator('a[href*="t.me/Lucas_Keee"]').first().getAttribute('href')
-  expect(href).toContain('t.me/Lucas_Keee')
+
+  // Click enquiry button — should open delivery dialog, not go directly to Telegram
+  await page.getByRole('button', { name: /Buy|Enquire to buy/i }).first().click()
+
+  // Dialog must appear with both options
+  await expect(page.getByRole('dialog')).toBeVisible({ timeout: 3_000 })
+  await expect(page.getByRole('dialog').getByText('Delivery')).toBeVisible()
+  await expect(page.getByRole('dialog').getByText('Self-collect')).toBeVisible()
+
+  // Delivery link must point to Telegram with delivery text in message
+  const deliveryHref = await page.getByRole('dialog').getByRole('link', { name: /Delivery/i }).getAttribute('href')
+  expect(deliveryHref).toContain('t.me/Lucas_Keee')
+  expect(decodeURIComponent(deliveryHref!)).toContain('Delivery')
+
+  // Self-collect link must point to Telegram with self-collect text in message
+  const selfCollectHref = await page.getByRole('dialog').getByRole('link', { name: /Self-collect/i }).getAttribute('href')
+  expect(selfCollectHref).toContain('t.me/Lucas_Keee')
+  expect(decodeURIComponent(selfCollectHref!)).toContain('Self-collect')
 })
 
 test('REQ-E2E-012: reserved and unavailable listings are hidden from buyer grid', async ({ page }) => {

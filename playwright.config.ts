@@ -21,6 +21,7 @@ try {
 export default defineConfig({
   testDir: './tests/e2e',
   globalSetup: './tests/e2e/global-setup.ts',
+  globalTeardown: './tests/e2e/global-teardown.ts',
   fullyParallel: false,
   retries: 0,
   timeout: 30_000,
